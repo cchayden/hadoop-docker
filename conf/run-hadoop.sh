@@ -45,7 +45,7 @@ service hue start
 
 sudo service hive-metastore start
 sudo service hive-server2 start
-sudo service postgresql restart
+sudo service zookeeper-server start
 
 sleep 1
 
