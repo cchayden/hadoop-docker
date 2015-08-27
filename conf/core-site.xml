@@ -5,7 +5,12 @@
 
   <property>
     <name>fs.default.name</name>
-    <value>hdfs://localhost:8020</value>
+    <value>hdfs://xpatterns-hadoop:8020</value>
+  </property>
+
+  <property>
+    <name>hadoop.security.authorization</name>
+    <value>false</value>
   </property>
 
   <property>

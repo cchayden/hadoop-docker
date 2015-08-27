@@ -67,9 +67,9 @@ RUN  chmod +x /usr/bin/run-hadoop.sh
 
 RUN  wget http://archive.cloudera.com/gplextras/misc/ext-2.2.zip -O ext.zip && \
      unzip ext.zip -d /var/lib/oozie
- 
+
 RUN service zookeeper-server init
- 
+
 # NameNode (HDFS)
 EXPOSE 8020 50070
 

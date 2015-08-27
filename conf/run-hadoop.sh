@@ -37,8 +37,7 @@ sudo -u hdfs hadoop fs -chmod 1777 /user/spark/applicationHistory
 #init spark shared libraries
 #client than can use SPARK_JAR=hdfs://<nn>:<port>/user/spark/share/lib/spark-assembly.jar
 sudo -u spark hadoop fs -mkdir -p /user/spark/share/lib 
-sudo -u spark hadoop fs -put /usr/lib/spark/lib/spark-assembly.jar /user/spark/share/lib/spark-assembly.jar 
-
+sudo -u spark hadoop fs -put /usr/lib/spark/lib/spark-assembly.jar /user/spark/share/lib/spark-assembly.jar
 service spark-history-server start
 
 service hue start
@@ -46,6 +45,7 @@ service hue start
 sudo service hive-metastore start
 sudo service hive-server2 start
 sudo service zookeeper-server start
+sudo service postgresql restart
 
 sleep 1
 
