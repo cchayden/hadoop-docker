@@ -23,6 +23,11 @@ COPY conf/python.list /etc/apt/sources.list.d/python.list
 RUN wget http://archive.cloudera.com/cdh5/ubuntu/trusty/amd64/cdh/archive.key -O archive.key && sudo apt-key add archive.key && \
     sudo apt-get update
 
+#Add postgres Repo
+RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main" >> /etc/apt/sources.list.d/pgdg.list
+RUN wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - && \
+	sudo apt-get update 
+
 #Install CDH package and dependencies
 RUN sudo apt-get install -y zookeeper-server && \
     sudo apt-get install -y hadoop-conf-pseudo && \
@@ -34,7 +39,7 @@ RUN sudo apt-get install -y zookeeper-server && \
     sudo apt-get install -y hive && \
     sudo apt-get install -y hive-metastore && \
     sudo apt-get install -y hive-server2 && \
-    sudo apt-get install -y postgresql && \
+    sudo apt-get install -y postgresql-9.4  && \
     sudo apt-get install -y libpostgresql-jdbc-java
 
 #jdbc setup
@@ -56,7 +61,8 @@ COPY conf/postgresql_init.sql /tmp/postgresql_init.sql
 #Setup Postgres
 USER postgres
 RUN service postgresql start && \
-    psql -a -f /tmp/postgresql_init.sql
+    psql -a -f /tmp/postgresql_init.sql && \
+    service postgresql stop
 USER root
 
 #Format HDFS
