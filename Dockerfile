@@ -29,18 +29,20 @@ RUN wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-k
 	sudo apt-get update 
 
 #Install CDH package and dependencies
-RUN sudo apt-get install -y zookeeper-server && \
-    sudo apt-get install -y hadoop-conf-pseudo && \
-    sudo apt-get install -y oozie && \
-    sudo apt-get install -y python2.7 && \
-    sudo apt-get install -y hue && \
-    sudo apt-get install -y hue-plugins && \
-    sudo apt-get install -y spark-core spark-history-server spark-python && \
-    sudo apt-get install -y hive && \
-    sudo apt-get install -y hive-metastore && \
-    sudo apt-get install -y hive-server2 && \
+RUN sudo apt-get install -y zookeeper-server=3.4.5+cdh5.4.4+91-1.cdh5.4.4.p0.6~trusty-cdh5.4.4 && \
+    sudo apt-get install -y hadoop-conf-pseudo=2.6.0+cdh5.4.4+597-1.cdh5.4.4.p0.6~trusty-cdh5.4.4 && \
+    sudo apt-get install -y oozie=4.1.0+cdh5.4.4+145-1.cdh5.4.4.p0.6~trusty-cdh5.4.4 && \
+    sudo apt-get install -y python2.7=2.7.6-8ubuntu0.2 && \
+    sudo apt-get install -y hue=3.7.0+cdh5.4.4+1236-1.cdh5.4.4.p0.6~trusty-cdh5.4.4 && \
+    sudo apt-get install -y hue-plugins=3.7.0+cdh5.4.4+1236-1.cdh5.4.4.p0.6~trusty-cdh5.4.4 && \
+    sudo apt-get install -y spark-core=1.3.0+cdh5.4.4+41-1.cdh5.4.4.p0.6~trusty-cdh5.4.4 && \
+    sudo apt-get install -y spark-history-server=1.3.0+cdh5.4.4+41-1.cdh5.4.4.p0.6~trusty-cdh5.4.4 && \
+    sudo apt-get install -y spark-python=1.3.0+cdh5.4.4+41-1.cdh5.4.4.p0.6~trusty-cdh5.4.4 && \
+    sudo apt-get install -y hive=1.1.0+cdh5.4.4+157-1.cdh5.4.4.p0.6~trusty-cdh5.4.4 && \
+    sudo apt-get install -y hive-metastore=1.1.0+cdh5.4.4+157-1.cdh5.4.4.p0.6~trusty-cdh5.4.4 && \
+    sudo apt-get install -y hive-server2=1.1.0+cdh5.4.4+157-1.cdh5.4.4.p0.6~trusty-cdh5.4.4 && \
     sudo apt-get install -y postgresql-9.4  && \
-    sudo apt-get install -y libpostgresql-jdbc-java
+    sudo apt-get install -y libpostgresql-jdbc-java=9.2-1002-1
 
 #jdbc setup
 RUN ln -s /usr/share/java/postgresql-jdbc4.jar /usr/lib/hive/lib/postgresql-jdbc4.jar

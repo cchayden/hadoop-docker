@@ -45,8 +45,13 @@ service hue start
 sudo service hive-metastore start
 sudo service hive-server2 start
 sudo service zookeeper-server start
+
+# Restart psotgres to work around https://issues.apache.org/jira/browse/HIVE-11123 
+sleep 5
 sudo service postgresql restart
 
+sleep 5
+echo " ---- Startup complete ----"
 sleep 1
 
 # tail log directory
