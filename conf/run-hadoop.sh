@@ -13,6 +13,8 @@ sudo -u hdfs hdfs dfs -mkdir /user/hive
 sudo -u hdfs hdfs dfs -mkdir /user/hive/warehouse
 sudo -u hdfs hdfs dfs -chmod -R 777 /user/hive/warehouse 
 
+service zookeeper-server start
+
 service hadoop-yarn-resourcemanager start
 service hadoop-yarn-nodemanager start
 service hadoop-mapreduce-historyserver start
@@ -43,7 +45,6 @@ service hue start
 
 sudo service hive-metastore start
 sudo service hive-server2 start
-sudo service zookeeper-server start
 
 #${TACHYON_HOME}/bin/tachyon format
 #${TACHYON_HOME}/bin/tachyon-start.sh local
