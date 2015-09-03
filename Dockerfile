@@ -1,5 +1,13 @@
+# ---- xPatterns Hadoop Docker ----
+
+# ---- Version Control ----
+
 FROM nimmis/java:oracle-8-jdk
-MAINTAINER Martin Chalupa <chalimartines@gmail.com>
+
+ENV TACHYON_VERSION 0.7.1
+ENV TACHYON_DOWNLOAD_LINK http://tachyon-project.org/downloads/files/${TACHYON_VERSION}/tachyon-${TACHYON_VERSION}-bin.tar.gz
+
+ENV TACHYON_HOME /usr/local/tachyon-${TACHYON_VERSION}
 
 #Base image doesn't start in root
 WORKDIR /
@@ -20,13 +28,7 @@ COPY conf/cloudera.pref /etc/apt/preferences.d/cloudera.pref
 COPY conf/python.list /etc/apt/sources.list.d/python.list
 
 #Add a Repository Key
-RUN wget http://archive.cloudera.com/cdh5/ubuntu/trusty/amd64/cdh/archive.key -O archive.key && sudo apt-key add archive.key && \
-    sudo apt-get update
-
-#Add postgres Repo
-RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main" >> /etc/apt/sources.list.d/pgdg.list
-RUN wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add - && \
-	sudo apt-get update 
+RUN wget http://archive.cloudera.com/cdh5/ubuntu/trusty/amd64/cdh/archive.key -O archive.key && sudo apt-key add archive.key && sudo apt-get update
 
 #Install CDH package and dependencies
 RUN sudo apt-get install -y zookeeper-server=3.4.5+cdh5.4.4+91-1.cdh5.4.4.p0.6~trusty-cdh5.4.4 && \
@@ -41,11 +43,22 @@ RUN sudo apt-get install -y zookeeper-server=3.4.5+cdh5.4.4+91-1.cdh5.4.4.p0.6~t
     sudo apt-get install -y hive=1.1.0+cdh5.4.4+157-1.cdh5.4.4.p0.6~trusty-cdh5.4.4 && \
     sudo apt-get install -y hive-metastore=1.1.0+cdh5.4.4+157-1.cdh5.4.4.p0.6~trusty-cdh5.4.4 && \
     sudo apt-get install -y hive-server2=1.1.0+cdh5.4.4+157-1.cdh5.4.4.p0.6~trusty-cdh5.4.4 && \
-    sudo apt-get install -y postgresql-9.4  && \
-    sudo apt-get install -y libpostgresql-jdbc-java=9.2-1002-1
+    sudo apt-get install -y openssh-server
+    
+# ---- Setup SSH ----
 
-#jdbc setup
-RUN ln -s /usr/share/java/postgresql-jdbc4.jar /usr/lib/hive/lib/postgresql-jdbc4.jar
+RUN mkdir /var/run/sshd && chmod 0755 /var/run/sshd
+RUN mkdir /root/.ssh
+RUN echo "StrictHostKeyChecking no" >> /root/.ssh/config
+
+# Generate a new key and allow it access to ssh.
+RUN ssh-keygen -b 2048 -t rsa -f /root/.ssh/id_rsa -q -N ""
+RUN cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys
+
+# ---- Install Tachyon ----
+
+RUN wget ${TACHYON_DOWNLOAD_LINK} -P /tmp/
+RUN tar xzf /tmp/tachyon-${TACHYON_VERSION}-bin.tar.gz -C /usr/local/
 
 #Copy updated config files
 COPY conf/core-site.xml /etc/hadoop/conf/core-site.xml
@@ -56,16 +69,7 @@ COPY conf/yarn-site.xml /etc/hadoop/conf/yarn-site.xml
 COPY conf/oozie-site.xml /etc/oozie/conf/oozie-site.xml
 COPY conf/spark-defaults.conf /etc/spark/conf/spark-defaults.conf
 COPY conf/hue.ini /etc/hue/conf/hue.ini
-COPY conf/hive-site-meta.xml /usr/lib/hive/conf/hive-site.xml
 COPY conf/hive-site-server.xml /etc/lib/hive/conf/hive-site.xml
-COPY conf/postgresql_init.sql /tmp/postgresql_init.sql
-
-#Setup Postgres
-USER postgres
-RUN service postgresql start && \
-    psql -a -f /tmp/postgresql_init.sql && \
-    service postgresql stop
-USER root
 
 #Format HDFS
 RUN sudo -u hdfs hdfs namenode -format

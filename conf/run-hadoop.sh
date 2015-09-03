@@ -1,6 +1,5 @@
 #!/bin/bash
 
-service postgresql start
 service hadoop-hdfs-namenode start
 service hadoop-hdfs-datanode start
 
@@ -46,11 +45,12 @@ sudo service hive-metastore start
 sudo service hive-server2 start
 sudo service zookeeper-server start
 
-# Restart psotgres to work around https://issues.apache.org/jira/browse/HIVE-11123 
-sleep 5
-sudo service postgresql restart
+#${TACHYON_HOME}/bin/tachyon format
+#${TACHYON_HOME}/bin/tachyon-start.sh local
 
-sleep 5
+# Start the SSH service required for spark & hdfs
+sudo service ssh start
+
 echo " ---- Startup complete ----"
 sleep 1
 
