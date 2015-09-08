@@ -4,10 +4,9 @@
 
 FROM nimmis/java:oracle-8-jdk
 
-ENV TACHYON_VERSION 0.7.1
-ENV TACHYON_DOWNLOAD_LINK http://tachyon-project.org/downloads/files/${TACHYON_VERSION}/tachyon-${TACHYON_VERSION}-bin.tar.gz
-
-ENV TACHYON_HOME /usr/local/tachyon-${TACHYON_VERSION}
+ENV HIVE_VERSION 1.2.1
+ENV HIVE_DOWNLOAD_LINK http://apache.arvixe.com/hive/hive-1.2.1/apache-hive-${HIVE_VERSION}-bin.tar.gz
+ENV HIVE_HOME /usr/local/apache-hive-${HIVE_VERSION}-bin
 
 #Base image doesn't start in root
 WORKDIR /
@@ -39,26 +38,10 @@ RUN sudo apt-get install -y zookeeper-server=3.4.5+cdh5.4.4+91-1.cdh5.4.4.p0.6~t
     sudo apt-get install -y hue-plugins=3.7.0+cdh5.4.4+1236-1.cdh5.4.4.p0.6~trusty-cdh5.4.4 && \
     sudo apt-get install -y spark-core=1.3.0+cdh5.4.4+41-1.cdh5.4.4.p0.6~trusty-cdh5.4.4 && \
     sudo apt-get install -y spark-history-server=1.3.0+cdh5.4.4+41-1.cdh5.4.4.p0.6~trusty-cdh5.4.4 && \
-    sudo apt-get install -y spark-python=1.3.0+cdh5.4.4+41-1.cdh5.4.4.p0.6~trusty-cdh5.4.4 && \
-    sudo apt-get install -y hive=1.1.0+cdh5.4.4+157-1.cdh5.4.4.p0.6~trusty-cdh5.4.4 && \
-    sudo apt-get install -y hive-metastore=1.1.0+cdh5.4.4+157-1.cdh5.4.4.p0.6~trusty-cdh5.4.4 && \
-    sudo apt-get install -y hive-server2=1.1.0+cdh5.4.4+157-1.cdh5.4.4.p0.6~trusty-cdh5.4.4 && \
-    sudo apt-get install -y openssh-server
-    
-# ---- Setup SSH ----
-
-RUN mkdir /var/run/sshd && chmod 0755 /var/run/sshd
-RUN mkdir /root/.ssh
-RUN echo "StrictHostKeyChecking no" >> /root/.ssh/config
-
-# Generate a new key and allow it access to ssh.
-RUN ssh-keygen -b 2048 -t rsa -f /root/.ssh/id_rsa -q -N ""
-RUN cat /root/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys
-
-# ---- Install Tachyon ----
-
-RUN wget ${TACHYON_DOWNLOAD_LINK} -P /tmp/
-RUN tar xzf /tmp/tachyon-${TACHYON_VERSION}-bin.tar.gz -C /usr/local/
+    sudo apt-get install -y spark-python=1.3.0+cdh5.4.4+41-1.cdh5.4.4.p0.6~trusty-cdh5.4.4
+#    sudo apt-get install -y hive=1.1.0+cdh5.4.4+157-1.cdh5.4.4.p0.6~trusty-cdh5.4.4 && \
+#    sudo apt-get install -y hive-metastore=1.1.0+cdh5.4.4+157-1.cdh5.4.4.p0.6~trusty-cdh5.4.4 && \
+#    sudo apt-get install -y hive-server2=1.1.0+cdh5.4.4+157-1.cdh5.4.4.p0.6~trusty-cdh5.4.4
 
 #Copy updated config files
 COPY conf/core-site.xml /etc/hadoop/conf/core-site.xml
@@ -70,6 +53,11 @@ COPY conf/oozie-site.xml /etc/oozie/conf/oozie-site.xml
 COPY conf/spark-defaults.conf /etc/spark/conf/spark-defaults.conf
 COPY conf/hue.ini /etc/hue/conf/hue.ini
 COPY conf/hive-site-server.xml /etc/lib/hive/conf/hive-site.xml
+
+# ---- Install hive ----
+
+RUN wget ${HIVE_DOWNLOAD_LINK} -P /tmp/
+RUN tar xzf /tmp/apache-hive-${HIVE_VERSION}-bin.tar.gz -C /usr/local/
 
 #Format HDFS
 RUN sudo -u hdfs hdfs namenode -format

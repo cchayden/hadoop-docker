@@ -43,17 +43,9 @@ service spark-history-server start
 
 service hue start
 
-sudo service hive-metastore start
-sudo service hive-server2 start
+${HIVE_HOME}/bin/hive --service metastore
 
-#${TACHYON_HOME}/bin/tachyon format
-#${TACHYON_HOME}/bin/tachyon-start.sh local
-
-# Start the SSH service required for spark & hdfs
-sudo service ssh start
-
-echo " ---- Startup complete ----"
-sleep 1
+#echo " ---- Startup complete ----"
 
 # tail log directory
 tail -n 1000 -f /var/log/hadoop-*/*.out
