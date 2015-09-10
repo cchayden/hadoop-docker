@@ -94,4 +94,8 @@ EXPOSE 18080
 # Technical port which can be used for your custom purpose.
 EXPOSE 9999
 
+# Hive Metastore
+
+EXPOSE 9083
+
 CMD ["/usr/bin/run-hadoop.sh"]

@@ -13,7 +13,12 @@ sudo -u hdfs hdfs dfs -mkdir /user/hive
 sudo -u hdfs hdfs dfs -mkdir /user/hive/warehouse
 sudo -u hdfs hdfs dfs -chmod -R 777 /user/hive/warehouse 
 
+# To hell with security
+sudo -u hdfs hdfs dfs -chmod -R 777 /
+
 service zookeeper-server start
+
+${HIVE_HOME}/bin/hive --service metastore
 
 service hadoop-yarn-resourcemanager start
 service hadoop-yarn-nodemanager start
@@ -42,8 +47,6 @@ sudo -u spark hadoop fs -put /usr/lib/spark/lib/spark-assembly.jar /user/spark/s
 service spark-history-server start
 
 service hue start
-
-${HIVE_HOME}/bin/hive --service metastore
 
 #echo " ---- Startup complete ----"
 
