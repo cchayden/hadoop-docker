@@ -5,7 +5,7 @@
 FROM nimmis/java:oracle-8-jdk
 
 ENV HIVE_VERSION 1.2.1
-ENV HIVE_DOWNLOAD_LINK http://apache.arvixe.com/hive/hive-1.2.1/apache-hive-${HIVE_VERSION}-bin.tar.gz
+ENV HIVE_DOWNLOAD_LINK http://apache.arvixe.com/hive/hive-${HIVE_VERSION}/apache-hive-${HIVE_VERSION}-bin.tar.gz
 ENV HIVE_HOME /usr/local/apache-hive-${HIVE_VERSION}-bin
 
 #Base image doesn't start in root
@@ -69,6 +69,14 @@ RUN  wget http://archive.cloudera.com/gplextras/misc/ext-2.2.zip -O ext.zip && \
      unzip ext.zip -d /var/lib/oozie
 
 RUN service zookeeper-server init
+
+# ---- OpenSSH server ----
+
+RUN apt-get update -y && apt-get install -y openssh-server
+
+RUN sudo -u oozie ssh-keygen -b 2048 -t rsa -f /var/lib/oozie/.ssh/id_rsa.pub -q -N ""
+RUN mkdir /root/.ssh/
+RUN cat /var/lib/oozie/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys
 
 # NameNode (HDFS)
 EXPOSE 8020 50070

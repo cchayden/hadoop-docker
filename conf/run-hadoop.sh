@@ -29,6 +29,7 @@ sudo -u hdfs hadoop fs -chown oozie:oozie /user/oozie
 sudo oozie-setup sharelib create -fs hdfs://localhost:8020 -locallib /usr/lib/oozie/oozie-sharelib-yarn
 
 service oozie start
+sudo -u oozie /usr/lib/oozie/bin/ooziedb.sh create -sqlfile /tmp/oozie.sql -run
 
 #init spark history server
 sudo -u hdfs hadoop fs -mkdir /user/spark

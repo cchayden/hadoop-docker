@@ -7,9 +7,7 @@
   to you under the Apache License, Version 2.0 (the
   "License"); you may not use this file except in compliance
   with the License.  You may obtain a copy of the License at
-
        http://www.apache.org/licenses/LICENSE-2.0
-
   Unless required by applicable law or agreed to in writing, software
   distributed under the License is distributed on an "AS IS" BASIS,
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -128,7 +126,7 @@
 
     <property>
         <name>oozie.service.JPAService.create.db.schema</name>
-        <value>true</value>
+        <value>false</value>
         <description>
             Creates Oozie DB.
 
@@ -139,7 +137,7 @@
 
     <property>
         <name>oozie.service.JPAService.jdbc.driver</name>
-        <value>org.postgresql.Driver</value>
+        <value>org.apache.derby.jdbc.EmbeddedDriver</value>
         <description>
             JDBC driver class.
         </description>
@@ -147,7 +145,7 @@
 
     <property>
         <name>oozie.service.JPAService.jdbc.url</name>
-        <value>jdbc:postgresql://localhost:5432/oozie</value>
+        <value>jdbc:derby:${oozie.data.dir}/${oozie.db.schema.name}-db;create=true</value>
         <description>
             JDBC URL.
         </description>
@@ -155,7 +153,7 @@
 
     <property>
         <name>oozie.service.JPAService.jdbc.username</name>
-        <value>oozie</value>
+        <value>sa</value>
         <description>
             DB user name.
         </description>
@@ -163,7 +161,7 @@
 
     <property>
         <name>oozie.service.JPAService.jdbc.password</name>
-        <value>oozie</value>
+        <value> </value>
         <description>
             DB user password.
 
@@ -329,41 +327,32 @@
     <!-- Proxyuser Configuration -->
 
     <!--
-
     <property>
         <name>oozie.service.ProxyUserService.proxyuser.#USER#.hosts</name>
         <value>*</value>
         <description>
             List of hosts the '#USER#' user is allowed to perform 'doAs'
             operations.
-
             The '#USER#' must be replaced with the username o the user who is
             allowed to perform 'doAs' operations.
-
             The value can be the '*' wildcard or a list of hostnames.
-
             For multiple users copy this property and replace the user name
             in the property name.
         </description>
     </property>
-
     <property>
         <name>oozie.service.ProxyUserService.proxyuser.#USER#.groups</name>
         <value>*</value>
         <description>
             List of groups the '#USER#' user is allowed to impersonate users
             from to perform 'doAs' operations.
-
             The '#USER#' must be replaced with the username o the user who is
             allowed to perform 'doAs' operations.
-
             The value can be the '*' wildcard or a list of groups.
-
             For multiple users copy this property and replace the user name
             in the property name.
         </description>
     </property>
-
     -->
 
     <!-- Default proxyuser configuration for Hue -->
