@@ -1,5 +1,13 @@
 #!/bin/bash
 
+# Start the SSH service 
+
+echo -e "\n---- Launching SSH ----\n"
+service ssh start
+
+
+# Start the HDFS service 
+echo -e "\n---- Luanching HDFS ----\n"
 service hadoop-hdfs-namenode start
 service hadoop-hdfs-datanode start
 
@@ -14,8 +22,14 @@ sudo -u hdfs hdfs dfs -mkdir /user/hive/warehouse
 sudo -u hdfs hdfs dfs -chmod -R 777 /user/hive/warehouse 
 sudo -u hdfs hdfs dfs -chmod -R 777 /
 
+
+# Start the Zookeeper service 
+echo -e "\n---- Luanching Zookeeper ----\n"
 service zookeeper-server start
 
+
+# Start the Yarn service 
+echo -e "\n---- Luanching Yarn ----\n"
 service hadoop-yarn-resourcemanager start
 service hadoop-yarn-nodemanager start
 service hadoop-mapreduce-historyserver start
@@ -23,15 +37,19 @@ service hadoop-mapreduce-historyserver start
 sudo -u hdfs hadoop fs -mkdir -p /user/hdfs
 sudo -u hdfs hadoop fs -chown hdfs /user/hdfs
 
-#init oozie
+
+# Start the oozie service 
+echo -e "\n---- Luanching Oozie ----\n"
 sudo -u hdfs hadoop fs -mkdir /user/oozie
 sudo -u hdfs hadoop fs -chown oozie:oozie /user/oozie
 sudo oozie-setup sharelib create -fs hdfs://localhost:8020 -locallib /usr/lib/oozie/oozie-sharelib-yarn
-
-service oozie start
 sudo -u oozie /usr/lib/oozie/bin/ooziedb.sh create -sqlfile /tmp/oozie.sql -run
 
-#init spark history server
+service oozie start
+
+
+# Starting the Spark History service
+echo -e "\n---- Luanching Spark History Server ----\n"
 sudo -u hdfs hadoop fs -mkdir /user/spark
 sudo -u hdfs hadoop fs -mkdir /user/spark/applicationHistory
 sudo -u hdfs hadoop fs -chown -R spark:spark /user/spark
@@ -43,14 +61,18 @@ sudo -u spark hadoop fs -mkdir -p /user/spark/share/lib
 sudo -u spark hadoop fs -put /usr/lib/spark/lib/spark-assembly.jar /user/spark/share/lib/spark-assembly.jar
 service spark-history-server start
 
+
+# Start the Hue service 
+echo -e "\n---- Luanching Hue ----\n"
 service hue start
 
-${HIVE_HOME}/bin/hive --service metastore
 
-# To hell with security
-sudo -u hdfs hdfs dfs -chmod -R 777 /
+# Start the Hive service
+echo -e "\n---- Luanching Hive ----\n"
+${HIVE_HOME}/bin/hive --service metastore&
 
-#echo " ---- Startup complete ----"
 
-# tail log directory
+# Finish up
+echo -e "\n---- Startup Complete ----\n"
+sleep 1
 tail -n 1000 -f /var/log/hadoop-*/*.out
