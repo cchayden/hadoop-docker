@@ -74,7 +74,7 @@ RUN service zookeeper-server init
 
 RUN apt-get update -y && apt-get install -y openssh-server
 
-RUN sudo -u oozie ssh-keygen -b 2048 -t rsa -f /var/lib/oozie/.ssh/id_rsa.pub -q -N ""
+RUN sudo -u oozie ssh-keygen -b 2048 -t rsa -f /var/lib/oozie/.ssh/id_rsa -q -N ""
 RUN mkdir /root/.ssh/
 RUN cat /var/lib/oozie/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys
 
