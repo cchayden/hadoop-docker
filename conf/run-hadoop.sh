@@ -28,6 +28,11 @@ echo -e "\n---- Luanching Zookeeper ----\n"
 service zookeeper-server start
 
 
+# Start the Hive service
+echo -e "\n---- Luanching Hive ----\n"
+${HIVE_HOME}/bin/hive --service metastore&
+
+
 # Start the Yarn service 
 echo -e "\n---- Luanching Yarn ----\n"
 service hadoop-yarn-resourcemanager start
@@ -65,11 +70,6 @@ service spark-history-server start
 # Start the Hue service 
 echo -e "\n---- Luanching Hue ----\n"
 service hue start
-
-
-# Start the Hive service
-echo -e "\n---- Luanching Hive ----\n"
-${HIVE_HOME}/bin/hive --service metastore&
 
 
 # Finish up
