@@ -5,11 +5,25 @@
 FROM nimmis/java:oracle-8-jdk
 
 ENV HIVE_VERSION 1.2.1
-ENV HIVE_DOWNLOAD_LINK http://apache.arvixe.com/hive/hive-${HIVE_VERSION}/apache-hive-${HIVE_VERSION}-bin.tar.gz
-ENV HIVE_HOME /usr/local/apache-hive-${HIVE_VERSION}-bin
+ENV XPATTERNS_WORKFLOW_VERSION 2.0.2
+
+# ---- Download Links ----
+
+ENV XPATTERNS_SPARK_BRIDGE_LINK 		xpatterns/transformation/${XPATTERNS_WORKFLOW_VERSION}/xpatterns-spark-bridge-${XPATTERNS_WORKFLOW_VERSION}.jar
+ENV XPATTERNS_WORKFLOW_LAUNCHER_LINK 	xpatterns/transformation/${XPATTERNS_WORKFLOW_VERSION}/tcomponent-launcher-${XPATTERNS_WORKFLOW_VERSION}.jar
+ENV HIVE_DOWNLOAD_LINK 					http://apache.arvixe.com/hive/hive-${HIVE_VERSION}/apache-hive-${HIVE_VERSION}-bin.tar.gz
 
 #Base image doesn't start in root
 WORKDIR /
+
+# ---- Default Environmental Variables ----
+
+ENV HIVE_HOME /usr/local/apache-hive-${HIVE_VERSION}-bin
+ENV WORKFLOW_HOME /usr/local/workflow
+
+# ---- apt-get install ----
+
+RUN apt-get update && apt-get install -y wget
 
 # ---- Set the locale ----
 
@@ -77,6 +91,13 @@ RUN apt-get update -y && apt-get install -y openssh-server
 RUN sudo -u oozie ssh-keygen -b 2048 -t rsa -f /var/lib/oozie/.ssh/id_rsa -q -N ""
 RUN mkdir /root/.ssh/
 RUN cat /var/lib/oozie/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys
+
+# ---- Download xPatterns JARs ----
+
+RUN wget https://s3.amazonaws.com/${XPATTERNS_WORKFLOW_LAUNCHER_LINK} -P ${WORKFLOW_HOME}/bin/
+RUN wget https://s3.amazonaws.com/${XPATTERNS_SPARK_BRIDGE_LINK} -P /usr/lib/
+
+# ---- Ports ----
 
 # NameNode (HDFS)
 EXPOSE 8020 50070

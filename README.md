@@ -3,7 +3,7 @@ xPatterns Hadoop
 
 Summary
 -------
-Simple hadoop docker used to run xPatterns aganst. 
+Simple hadoop docker used to run xPatterns. 
 
  * HDFS : 50070
  * Hive Metastore 
