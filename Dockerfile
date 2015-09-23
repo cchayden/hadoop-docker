@@ -53,6 +53,7 @@ RUN sudo apt-get install -y zookeeper-server=3.4.5+cdh5.4.4+91-1.cdh5.4.4.p0.6~t
     sudo apt-get install -y spark-core=1.3.0+cdh5.4.4+41-1.cdh5.4.4.p0.6~trusty-cdh5.4.4 && \
     sudo apt-get install -y spark-history-server=1.3.0+cdh5.4.4+41-1.cdh5.4.4.p0.6~trusty-cdh5.4.4 && \
     sudo apt-get install -y spark-python=1.3.0+cdh5.4.4+41-1.cdh5.4.4.p0.6~trusty-cdh5.4.4
+ 
 #    sudo apt-get install -y hive=1.1.0+cdh5.4.4+157-1.cdh5.4.4.p0.6~trusty-cdh5.4.4 && \
 #    sudo apt-get install -y hive-metastore=1.1.0+cdh5.4.4+157-1.cdh5.4.4.p0.6~trusty-cdh5.4.4 && \
 #    sudo apt-get install -y hive-server2=1.1.0+cdh5.4.4+157-1.cdh5.4.4.p0.6~trusty-cdh5.4.4
@@ -73,7 +74,8 @@ COPY conf/hive-site-server.xml /etc/lib/hive/conf/hive-site.xml
 RUN wget ${HIVE_DOWNLOAD_LINK} -P /tmp/
 RUN tar xzf /tmp/apache-hive-${HIVE_VERSION}-bin.tar.gz -C /usr/local/
 
-#Format HDFS
+# ---- Format HDFS ----
+
 RUN sudo -u hdfs hdfs namenode -format
 
 COPY conf/run-hadoop.sh /usr/bin/run-hadoop.sh
