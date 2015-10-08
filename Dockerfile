@@ -93,6 +93,8 @@ RUN apt-get update -y && apt-get install -y openssh-server
 RUN sudo -u oozie ssh-keygen -b 2048 -t rsa -f /var/lib/oozie/.ssh/id_rsa -q -N ""
 RUN mkdir /root/.ssh/
 RUN cat /var/lib/oozie/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys
+RUN sed -i  '/pam_loginuid/s/^/#/' /etc/pam.d/sshd
+
 
 # ---- Download xPatterns JARs ----
 
