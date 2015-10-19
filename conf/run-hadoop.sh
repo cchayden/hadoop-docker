@@ -8,6 +8,9 @@ service ssh start
 
 # Start the HDFS service 
 echo -e "\n---- Luanching HDFS ----\n"
+chown hdfs:hadoop /var/lib/hadoop-hdfs/cache/
+rm -Rf /var/lib/hadoop-hdfs/cache/*
+sudo -u hdfs hdfs namenode -format
 service hadoop-hdfs-namenode start
 service hadoop-hdfs-datanode start
 
@@ -25,6 +28,8 @@ sudo -u hdfs hdfs dfs -chmod -R 777 /
 
 # Start the Zookeeper service 
 echo -e "\n---- Luanching Zookeeper ----\n"
+chown -R zookeeper:zookeeper /var/lib/zookeeper
+service zookeeper-server init
 service zookeeper-server start
 
 

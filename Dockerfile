@@ -23,7 +23,7 @@ ENV WORKFLOW_HOME /usr/local/workflow
 
 # ---- apt-get install ----
 
-RUN apt-get update && apt-get install -y wget
+RUN apt-get update && apt-get install -y wget zip
 
 # ---- Set the locale ----
 
@@ -76,15 +76,12 @@ RUN tar xzf /tmp/apache-hive-${HIVE_VERSION}-bin.tar.gz -C /usr/local/
 
 # ---- Format HDFS ----
 
-RUN sudo -u hdfs hdfs namenode -format
-
-COPY conf/run-hadoop.sh /usr/bin/run-hadoop.sh
-RUN  chmod +x /usr/bin/run-hadoop.sh
+#RUN sudo -u hdfs hdfs namenode -format
 
 RUN  wget http://archive.cloudera.com/gplextras/misc/ext-2.2.zip -O ext.zip && \
      unzip ext.zip -d /var/lib/oozie
 
-RUN service zookeeper-server init
+#RUN service zookeeper-server init
 
 # ---- OpenSSH server ----
 
@@ -129,4 +126,6 @@ EXPOSE 9999
 
 EXPOSE 9083
 
-CMD ["/usr/bin/run-hadoop.sh"]
+COPY conf/run.sh /usr/bin/run.sh
+RUN chmod u+x /usr/bin/run.sh
+CMD ["/usr/bin/run.sh"]
