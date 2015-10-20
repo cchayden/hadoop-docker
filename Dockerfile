@@ -68,6 +68,7 @@ COPY conf/oozie-site.xml /etc/oozie/conf/oozie-site.xml
 COPY conf/spark-defaults.conf /etc/spark/conf/spark-defaults.conf
 COPY conf/hue.ini /etc/hue/conf/hue.ini
 COPY conf/hive-site-server.xml /etc/lib/hive/conf/hive-site.xml
+COPY conf/hive-site-meta.xml /usr/local/apache-hive-1.2.1-bin/conf/hive-site.xml
 
 # ---- Install hive ----
 

@@ -9,7 +9,11 @@ init()
 	sudo -u hdfs hdfs namenode -format
 
 	# Setup zookeeper
+	chown zookeeper:zookeeper /var/lib/zookeeper/
 	service zookeeper-server init
+
+	# Clean the derby db directory
+        rm -Rf /derby/*
 	
 }
 
