@@ -4,7 +4,6 @@
 
 FROM nimmis/java:oracle-8-jdk
 
-ENV test 1
 ENV HIVE_VERSION 1.2.1
 ENV XPATTERNS_WORKFLOW_VERSION 2.0.2
 
@@ -70,6 +69,7 @@ COPY conf/spark-defaults.conf /etc/spark/conf/spark-defaults.conf
 COPY conf/hue.ini /etc/hue/conf/hue.ini
 COPY conf/hive-site-server.xml /etc/lib/hive/conf/hive-site.xml
 COPY conf/hive-site-meta.xml /usr/local/apache-hive-1.2.1-bin/conf/hive-site.xml
+COPY conf/hive-site-meta.xml /etc/hive/conf.dist/hive-site.xml
 
 # ---- Install hive ----
 
