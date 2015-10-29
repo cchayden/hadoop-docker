@@ -58,6 +58,16 @@ RUN sudo apt-get install -y zookeeper-server=3.4.5+cdh5.4.4+91-1.cdh5.4.4.p0.6~t
 #    sudo apt-get install -y hive-metastore=1.1.0+cdh5.4.4+157-1.cdh5.4.4.p0.6~trusty-cdh5.4.4 && \
 #    sudo apt-get install -y hive-server2=1.1.0+cdh5.4.4+157-1.cdh5.4.4.p0.6~trusty-cdh5.4.4
 
+RUN sudo apt-get install -y mysql-server
+
+RUN wget http://cdn.mysql.com//Downloads/Connector-J/mysql-connector-java-5.1.37.tar.gz -P /tmp/
+RUN tar xzf /tmp/mysql-connector-java-5.1.37.tar.gz -C /tmp/
+RUN mv /tmp/mysql-connector-java-5.1.37/mysql-connector-java-5.1.37-bin.jar /usr/lib/hive/lib/
+
+
+#RUN sudo apt-get install -y libmysql-java
+#RUN ln -s /usr/share/java/libmysql-java.jar /usr/lib/hive/lib/libmysql-java.jar
+
 #Copy updated config files
 COPY conf/core-site.xml /etc/hadoop/conf/core-site.xml
 COPY conf/hdfs-site.xml /etc/hadoop/conf/hdfs-site.xml
@@ -75,6 +85,7 @@ COPY conf/hive-site-meta.xml /etc/hive/conf.dist/hive-site.xml
 
 RUN wget ${HIVE_DOWNLOAD_LINK} -P /tmp/
 RUN tar xzf /tmp/apache-hive-${HIVE_VERSION}-bin.tar.gz -C /usr/local/
+#RUN mv /usr/lib/hive/conf/hive-env.sh.template /usr/lib/hive/conf/hive-env.sh
 
 # ---- Format HDFS ----
 

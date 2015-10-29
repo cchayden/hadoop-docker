@@ -12,9 +12,14 @@ init()
 	chown zookeeper:zookeeper /var/lib/zookeeper/
 	service zookeeper-server init
 
-	# Clean the derby db directory
-        rm -Rf /derby/*
-	
+	service mysql start
+
+	mysql -e "CREATE DATABASE metastore;"
+	mysql -e "USE metastore; SOURCE /usr/lib/hive/scripts/metastore/upgrade/mysql/hive-schema-0.14.0.mysql.sql;"
+	mysql -e "CREATE USER 'hive'@'localhost' IDENTIFIED BY 'mypassword';"
+ 	mysql -e "REVOKE ALL PRIVILEGES, GRANT OPTION FROM 'hive'@'localhost';"
+        mysql -e "GRANT SELECT,INSERT,UPDATE,DELETE,LOCK TABLES,EXECUTE ON metastore.* TO 'hive'@'localhost';"
+	mysql -e "FLUSH PRIVILEGES;"
 }
 
 
@@ -62,9 +67,12 @@ start_hadoop()
 	echo -e "\n---- Luanching Zookeeper ----\n"
 	service zookeeper-server start
 
+	# Start the mysql database
+        service mysql start
+
 	# Start the Hive service
 	echo -e "\n---- Luanching Hive ----\n"
-	${HIVE_HOME}/bin/hive --service metastore&
+	/usr/bin/hive --service metastore&
 
 	# Start the Yarn service 
 	echo -e "\n---- Luanching Yarn ----\n"
