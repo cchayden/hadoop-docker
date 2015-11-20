@@ -5,7 +5,7 @@
 FROM nimmis/java:oracle-8-jdk
 
 ENV HIVE_VERSION 1.2.1
-ENV XPATTERNS_WORKFLOW_VERSION 2.0.2
+ENV XPATTERNS_WORKFLOW_VERSION 2.0.9
 
 # ---- Download Links ----
 
