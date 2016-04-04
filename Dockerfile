@@ -1,6 +1,7 @@
-# ---- xPatterns Hadoop Docker ----
+# ---- xPatterns Hadoop Docker ----------------------------
 
-# ---- Version Control ----
+
+# ---- Version Control ------------------------------------
 
 FROM nimmis/java:oracle-8-jdk
 
@@ -8,25 +9,28 @@ ENV HIVE_VERSION 1.2.1
 ENV XPATTERNS_WORKFLOW_LAUNCHER_VERSION 2.1.2
 ENV XPATTERNS_SPARK_BRIDGE_VERSION 2.0.6
 
-# ---- Download Links ----
+# ---- Download Links -------------------------------------
 
 ENV XPATTERNS_SPARK_BRIDGE_LINK 		xpatterns/spark-bridge/${XPATTERNS_SPARK_BRIDGE_VERSION}/xpatterns-spark-bridge-${XPATTERNS_SPARK_BRIDGE_VERSION}.jar
 ENV XPATTERNS_WORKFLOW_LAUNCHER_LINK 	xpatterns/transformation/${XPATTERNS_WORKFLOW_LAUNCHER_VERSION}/tcomponent-launcher-${XPATTERNS_WORKFLOW_LAUNCHER_VERSION}.jar
-ENV HIVE_DOWNLOAD_LINK 					http://apache.arvixe.com/hive/hive-${HIVE_VERSION}/apache-hive-${HIVE_VERSION}-bin.tar.gz
+ENV HIVE_DOWNLOAD_LINK 					https://s3.amazonaws.com/xpatterns/dependencies/hive/apache-hive-${HIVE_VERSION}-bin.tar.gz
 
 #Base image doesn't start in root
 WORKDIR /
 
-# ---- Default Environmental Variables ----
+
+# ---- Default Environmental Variables --------------------
 
 ENV HIVE_HOME /usr/local/apache-hive-${HIVE_VERSION}-bin
 ENV WORKFLOW_HOME /usr/local/workflow
 
-# ---- apt-get install ----
+
+# ---- apt-get install ------------------------------------
 
 RUN apt-get update && apt-get install -y wget zip
 
-# ---- Set the locale ----
+
+# ---- Set the locale -------------------------------------
 
 RUN locale-gen en_US.UTF-8 && \
 	update-locale LANG=en_US.UTF-8
@@ -45,19 +49,19 @@ COPY conf/python.list /etc/apt/sources.list.d/python.list
 RUN wget http://archive.cloudera.com/cdh5/ubuntu/trusty/amd64/cdh/archive.key -O archive.key && sudo apt-key add archive.key && sudo apt-get update
 
 #Install CDH package and dependencies
-RUN sudo apt-get install -y zookeeper-server=3.4.5+cdh5.4.4+91-1.cdh5.4.4.p0.6~trusty-cdh5.4.4 && \
-    sudo apt-get install -y hadoop-conf-pseudo=2.6.0+cdh5.4.4+597-1.cdh5.4.4.p0.6~trusty-cdh5.4.4 && \
-    sudo apt-get install -y oozie=4.1.0+cdh5.4.4+145-1.cdh5.4.4.p0.6~trusty-cdh5.4.4 && \
-    sudo apt-get install -y python2.7=2.7.6-8ubuntu0.2 && \
-    sudo apt-get install -y hue=3.7.0+cdh5.4.4+1236-1.cdh5.4.4.p0.6~trusty-cdh5.4.4 && \
-    sudo apt-get install -y hue-plugins=3.7.0+cdh5.4.4+1236-1.cdh5.4.4.p0.6~trusty-cdh5.4.4 && \
-    sudo apt-get install -y spark-core=1.3.0+cdh5.4.4+41-1.cdh5.4.4.p0.6~trusty-cdh5.4.4 && \
-    sudo apt-get install -y spark-history-server=1.3.0+cdh5.4.4+41-1.cdh5.4.4.p0.6~trusty-cdh5.4.4 && \
-    sudo apt-get install -y spark-python=1.3.0+cdh5.4.4+41-1.cdh5.4.4.p0.6~trusty-cdh5.4.4
+RUN sudo apt-get install -y zookeeper-server=3.4.5+cdh5.4.4+91-1.cdh5.4.4.p0.6~trusty-cdh5.4.4
+RUN sudo apt-get install -y hadoop-conf-pseudo=2.6.0+cdh5.4.4+597-1.cdh5.4.4.p0.6~trusty-cdh5.4.4
+RUN sudo apt-get install -y oozie=4.1.0+cdh5.4.4+145-1.cdh5.4.4.p0.6~trusty-cdh5.4.4
+RUN sudo apt-get install -y python2.7=2.7.6-8ubuntu0.2
+RUN sudo apt-get install -y hue=3.7.0+cdh5.4.4+1236-1.cdh5.4.4.p0.6~trusty-cdh5.4.4
+RUN sudo apt-get install -y hue-plugins=3.7.0+cdh5.4.4+1236-1.cdh5.4.4.p0.6~trusty-cdh5.4.4
+RUN sudo apt-get install -y spark-core=1.3.0+cdh5.4.4+41-1.cdh5.4.4.p0.6~trusty-cdh5.4.4
+RUN sudo apt-get install -y spark-history-server=1.3.0+cdh5.4.4+41-1.cdh5.4.4.p0.6~trusty-cdh5.4.4
+RUN sudo apt-get install -y spark-python=1.3.0+cdh5.4.4+41-1.cdh5.4.4.p0.6~trusty-cdh5.4.4
  
-#    sudo apt-get install -y hive=1.1.0+cdh5.4.4+157-1.cdh5.4.4.p0.6~trusty-cdh5.4.4 && \
-#    sudo apt-get install -y hive-metastore=1.1.0+cdh5.4.4+157-1.cdh5.4.4.p0.6~trusty-cdh5.4.4 && \
-#    sudo apt-get install -y hive-server2=1.1.0+cdh5.4.4+157-1.cdh5.4.4.p0.6~trusty-cdh5.4.4
+#RUN sudo apt-get install -y hive=1.1.0+cdh5.4.4+157-1.cdh5.4.4.p0.6~trusty-cdh5.4.4
+#RUN sudo apt-get install -y hive-metastore=1.1.0+cdh5.4.4+157-1.cdh5.4.4.p0.6~trusty-cdh5.4.4
+#RUN sudo apt-get install -y hive-server2=1.1.0+cdh5.4.4+157-1.cdh5.4.4.p0.6~trusty-cdh5.4.4
 
 RUN sudo apt-get install -y mysql-server
 
@@ -82,13 +86,15 @@ COPY conf/hive-site-server.xml /etc/lib/hive/conf/hive-site.xml
 COPY conf/hive-site-meta.xml /usr/local/apache-hive-1.2.1-bin/conf/hive-site.xml
 COPY conf/hive-site-meta.xml /etc/hive/conf.dist/hive-site.xml
 
-# ---- Install hive ----
+
+# ---- Install hive ---------------------------------------
 
 RUN wget ${HIVE_DOWNLOAD_LINK} -P /tmp/
 RUN tar xzf /tmp/apache-hive-${HIVE_VERSION}-bin.tar.gz -C /usr/local/
 #RUN mv /usr/lib/hive/conf/hive-env.sh.template /usr/lib/hive/conf/hive-env.sh
 
-# ---- Format HDFS ----
+
+# ---- Format HDFS ----------------------------------------
 
 #RUN sudo -u hdfs hdfs namenode -format
 
@@ -97,7 +103,8 @@ RUN  wget http://archive.cloudera.com/gplextras/misc/ext-2.2.zip -O ext.zip && \
 
 #RUN service zookeeper-server init
 
-# ---- OpenSSH server ----
+
+# ---- OpenSSH server -------------------------------------
 
 RUN apt-get update -y && apt-get install -y openssh-server
 
@@ -107,12 +114,13 @@ RUN cat /var/lib/oozie/.ssh/id_rsa.pub >> /root/.ssh/authorized_keys
 RUN sed -i  '/pam_loginuid/s/^/#/' /etc/pam.d/sshd
 
 
-# ---- Download xPatterns JARs ----
+# ---- Download xPatterns JARs ----------------------------
 
 RUN wget https://s3.amazonaws.com/${XPATTERNS_WORKFLOW_LAUNCHER_LINK} -P ${WORKFLOW_HOME}/bin/
 RUN wget https://s3.amazonaws.com/${XPATTERNS_SPARK_BRIDGE_LINK} -P /usr/lib/
 
-# ---- Ports ----
+
+# ---- Ports ----------------------------------------------
 
 # NameNode (HDFS)
 EXPOSE 8020 50070
@@ -141,6 +149,9 @@ EXPOSE 9999
 # Hive Metastore
 
 EXPOSE 9083
+
+
+# ---- Setup run script -----------------------------------
 
 COPY conf/run.sh /usr/bin/run.sh
 RUN chmod u+x /usr/bin/run.sh
