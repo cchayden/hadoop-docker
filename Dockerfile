@@ -22,8 +22,8 @@ WORKDIR /
 # ---- Default Environmental Variables --------------------
 
 ENV HIVE_HOME /usr/local/apache-hive-${HIVE_VERSION}-bin
-ENV WORKFLOW_HOME /usr/local/workflow
-
+ENV WORKFLOW_HOME /opt/atigeo/workflow
+ENV SPARK_BRIDGE_DIR /opt/atigeo/spark-bridge
 
 # ---- apt-get install ------------------------------------
 
@@ -117,7 +117,7 @@ RUN sed -i  '/pam_loginuid/s/^/#/' /etc/pam.d/sshd
 # ---- Download xPatterns JARs ----------------------------
 
 RUN wget https://s3.amazonaws.com/${XPATTERNS_WORKFLOW_LAUNCHER_LINK} -P ${WORKFLOW_HOME}/bin/
-RUN wget https://s3.amazonaws.com/${XPATTERNS_SPARK_BRIDGE_LINK} -P /usr/lib/
+RUN wget https://s3.amazonaws.com/${XPATTERNS_SPARK_BRIDGE_LINK} -P ${SPARK_BRIDGE_DIR}/
 
 
 # ---- Ports ----------------------------------------------
