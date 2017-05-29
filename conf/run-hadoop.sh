@@ -34,8 +34,8 @@ service zookeeper-server start
 
 
 # Start the Hive service
-echo -e "\n---- Luanching Hive ----\n"
-${HIVE_HOME}/bin/hive --service metastore&
+#echo -e "\n---- Luanching Hive ----\n"
+#${HIVE_HOME}/bin/hive --service metastore&
 
 
 # Start the Yarn service 

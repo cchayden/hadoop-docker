@@ -5,7 +5,7 @@
 
   <property>
     <name>fs.default.name</name>
-    <value>hdfs://xpatterns-hadoop:8020</value>
+    <value>hdfs://xframes-hadoop:8020</value>
   </property>
 
   <property>
