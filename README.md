@@ -1,17 +1,11 @@
-xPatterns Hadoop
+XFrames Hadoop
 =============
 
 Summary
 -------
-Simple hadoop docker used to run xPatterns. 
+Simple hadoop docker used to run XFrames hdfs tests.
 
- * HDFS : 50070
- * Hive Metastore 
- * JobHistoryServer : 19888
- * Hue : 8888
- * Oozie : 11000
- * Yarn : 8088
- * Spark History Server : 18080
+ * HDFS : 50070 8020
 
 Dependencies
 -------
@@ -20,11 +14,15 @@ Dependencies
 
 Installation 
 -------
- * Pull the latest Hadoop docker container. $`docker pull xpatterns/hadoop`
+ * Pull the latest Hadoop docker container. $`docker pull cchayden/xframes-hadoop`
 
 Running
 -------
- * Launch the Hadoop docker container $`docker run -it -p 50070:50070 -p 8088:8088 -p 8040:8040 -p 19888:19888 -p 11000:11000 -p 8888:8888 -p 18080:18080 xpatterns/hadoop`
+ 
+ * Launch the Hadoop docker container:
+ $  docker run -it -p 50070:50070 -p 8088:8088 -p 8040:8040 \
+    -v /tmp/hdfs-cache:/var/lib/hadoop-hdfs/cache \
+    --hostname xframes-hadoop cchayden/xframes-hadoop
 
 Testing
 -------
