@@ -1,4 +1,4 @@
-# ---- XFrames Hadoop Docker ----
+# ---- XFrames HDFS Docker ----
 
 # ---- Version Control ----
 

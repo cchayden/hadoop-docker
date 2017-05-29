@@ -7,4 +7,4 @@ mkdir $CACHE
 
 docker run -it -p 50070:50070 -p 8088:8088 -p 8040:8040 \
     -v "$CACHE":/var/lib/hadoop-hdfs/cache \
-    --hostname xframes-hadoop xframes-hadoop
+    --hostname xframes-hdfs xframes-hdfs

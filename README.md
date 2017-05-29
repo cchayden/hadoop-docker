@@ -1,9 +1,9 @@
-XFrames Hadoop
-=============
+XFrames HDFS
+============
 
 Summary
 -------
-Simple hadoop docker used to run XFrames hdfs tests.
+Simple hdfs docker used to run XFrames hdfs tests.
 
  * HDFS : 50070 8020
 
@@ -14,7 +14,7 @@ Dependencies
 
 Installation 
 -------
- * Pull the latest Hadoop docker container. $`docker pull cchayden/xframes-hadoop`
+ * Pull the latest HDFS docker container. $`docker pull cchayden/xframes-hdfs`
 
 Running
 -------
@@ -22,7 +22,7 @@ Running
  * Launch the Hadoop docker container:
  $  docker run -it -p 50070:50070 -p 8088:8088 -p 8040:8040 \
     -v /tmp/hdfs-cache:/var/lib/hadoop-hdfs/cache \
-    --hostname xframes-hadoop cchayden/xframes-hadoop
+    --hostname xframes-hdfs cchayden/xframes-hdfs
 
 Testing
 -------

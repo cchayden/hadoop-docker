@@ -1,2 +1,2 @@
 #!/bin/bash
-docker build . --tag xframes-hadoop
+docker build . --tag xframes-hdfs

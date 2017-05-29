@@ -3,5 +3,5 @@
 export DOCKER_ID_USER=cchayden
 
 docker login
-docker tag xframes-hadoop cchayden/xframes-hadoop
-docker push cchayden/xframes-hadoop
+docker tag xframes-hdfs cchayden/xframes-hdfs
+docker push cchayden/xframes-hdfs
